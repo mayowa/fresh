@@ -2,13 +2,14 @@ package runner
 
 import (
 	"fmt"
-	"github.com/pilu/config"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/pilu/config"
 )
 
 const (
@@ -19,6 +20,7 @@ const (
 var settings = map[string]string{
 	"config_path":       "./runner.conf",
 	"root":              ".",
+	"watch_path":        ".",
 	"tmp_path":          "./tmp",
 	"build_name":        "runner-build",
 	"build_log":         "runner-build-errors.log",
@@ -68,7 +70,7 @@ func logColor(logName string) string {
 }
 
 func loadEnvSettings() {
-	for key, _ := range settings {
+	for key := range settings {
 		envKey := fmt.Sprintf("%s%s", envSettingsPrefix, strings.ToUpper(key))
 		if value := os.Getenv(envKey); value != "" {
 			settings[key] = value
@@ -103,6 +105,10 @@ func getenv(key, defaultValue string) string {
 	}
 
 	return defaultValue
+}
+
+func watchPath() string {
+	return settings["watch_path"]
 }
 
 func root() string {
