@@ -1,5 +1,6 @@
 root:              .
 watch_path         .
+exclude_folder     node_modules
 tmp_path:          ./tmp
 build_name:        runner-build
 build_log:         runner-build-errors.log

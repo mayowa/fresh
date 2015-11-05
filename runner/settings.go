@@ -21,6 +21,7 @@ var settings = map[string]string{
 	"config_path":       "./runner.conf",
 	"root":              ".",
 	"watch_path":        ".",
+	"exclude_folder":    "node_modules",
 	"tmp_path":          "./tmp",
 	"build_name":        "runner-build",
 	"build_log":         "runner-build-errors.log",
@@ -109,6 +110,10 @@ func getenv(key, defaultValue string) string {
 
 func watchPath() string {
 	return settings["watch_path"]
+}
+
+func excludeFolder() []string {
+	return strings.Split(settings["exclude_folder"], ",")
 }
 
 func root() string {
