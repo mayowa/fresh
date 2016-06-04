@@ -108,8 +108,8 @@ func getenv(key, defaultValue string) string {
 	return defaultValue
 }
 
-func watchPath() string {
-	return settings["watch_path"]
+func watchPath() []string {
+	return strings.Split(settings["watch_path"], ",")
 }
 
 func excludeFolder() []string {

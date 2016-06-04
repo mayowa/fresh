@@ -37,25 +37,26 @@ func watchFolder(path string) {
 }
 
 func watch() {
-	watchPath := watchPath()
-	filepath.Walk(watchPath, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() && !isTmpDir(path) {
-			if len(path) > 1 {
-				if strings.HasPrefix(filepath.Base(path), ".") {
-					return filepath.SkipDir
-				}
-
-				for _, folder := range excludeFolder() {
-					if len(folder) > 1 && strings.Contains(path, folder) {
-						watcherLog("Ignoring %s (cause:%s)", path, folder)
+	for _, watchPath := range watchPath() {
+		filepath.Walk(watchPath, func(path string, info os.FileInfo, err error) error {
+			if info.IsDir() && !isTmpDir(path) {
+				if len(path) > 1 {
+					if strings.HasPrefix(filepath.Base(path), ".") {
 						return filepath.SkipDir
 					}
+
+					for _, folder := range excludeFolder() {
+						if len(folder) > 1 && strings.Contains(path, folder) {
+							watcherLog("Ignoring %s (cause:%s)", path, folder)
+							return filepath.SkipDir
+						}
+					}
 				}
+
+				watchFolder(path)
 			}
 
-			watchFolder(path)
-		}
-
-		return err
-	})
+			return err
+		})
+	}
 }
